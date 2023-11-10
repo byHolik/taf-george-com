@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.george.taf.objects.Error;
+import com.george.taf.ro.Error;
 import io.restassured.response.Response;
 
 public class Utils {
@@ -52,17 +52,16 @@ public class Utils {
         return email.toString();
     }
 
-    public static String randomPasswordGenerator(int passwordLength) {
+    public static String randomPasswordGenerator(int emailLength) {
         String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?";
+        StringBuilder email = new StringBuilder();
 
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 0; i < passwordLength; i++) {
-
+        for (int i = 0; i < emailLength; i++) {
             int charIndex = (int) (Math.random() * characters.length());
-            password.append(characters.charAt(charIndex));
+            email.append(characters.charAt(charIndex));
         }
 
-        return password.toString();
+        return email.toString();
     }
+
 }

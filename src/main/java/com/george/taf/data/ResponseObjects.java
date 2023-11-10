@@ -1,9 +1,9 @@
 package com.george.taf.data;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.george.taf.objects.BasketInfo;
-import com.george.taf.objects.BasketItem;
-import com.george.taf.objects.Error;
+import com.george.taf.ro.BasketInfo;
+import com.george.taf.ro.BasketItem;
+import com.george.taf.ro.Error;
 import com.george.taf.utils.Utils;
 import io.restassured.response.Response;
 
