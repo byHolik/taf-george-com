@@ -7,8 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.george.taf.ro.Error;
 import io.restassured.response.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Utils {
+    public static final Logger logger = LogManager.getLogger();
     public static String getLoginResponseString(Response response) {
         return response.then().extract().asString();
     }
@@ -36,7 +39,6 @@ public class Utils {
         System.out.println(str);
     }
 
-
     public static String randomEmailGenerator(int emailLength) {
         String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
         String domain = "test.com";
@@ -62,6 +64,10 @@ public class Utils {
         }
 
         return email.toString();
+    }
+
+    public static int getIntegerPrice(String price) {
+        return Integer.parseInt(price.replace("€", ""));
     }
 
 }

@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static com.george.taf.data.ResponseObjects.*;
+import static com.george.taf.data.ApiResponseObjects.*;
 
 
 public class LoginApiTest {

@@ -1,13 +1,11 @@
 package com.george.taf.data;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.george.taf.ro.BasketInfo;
 import com.george.taf.ro.BasketItem;
 import com.george.taf.ro.Error;
-import com.george.taf.utils.Utils;
 import io.restassured.response.Response;
 
-public class ResponseObjects {
+public class ApiResponseObjects {
     public static Error expectedBasketNoQuantityError() {
         return new Error(
                 "addToCartError",
@@ -74,11 +72,6 @@ public class ResponseObjects {
                 "ERROR",
                 "INVALID_CREDENTIALS",
                 "We do not recognise that email address or password. Please check and try again.");
-    }
-
-    public static Error actualBasketNoQuantityError(String json) throws JsonProcessingException {
-
-        return Utils.getErrorObject(json);
     }
 
     public static Error actualBasketNoQuantityError(Response response) {

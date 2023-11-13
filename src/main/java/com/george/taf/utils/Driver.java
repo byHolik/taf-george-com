@@ -1,15 +1,17 @@
 package com.george.taf.utils;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.jetbrains.annotations.Nullable;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+
+import static com.george.taf.data.UiLocators.*;
 
 public class Driver {
     public static final int SECONDS = 1;
@@ -73,11 +75,67 @@ driver.get("http://www.google.com");
         }
     }
 
-    public static void pause() {
+    public static void pause(int millis) {
         try {
-            Thread.sleep(500);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void pauseFluent(String xPath, int millis) {
+        try {
+            Utils.logger.info("Fluent pause " + millis + " ms");
+            new FluentWait(Driver.getDriver())
+                    .withTimeout(Duration.ofMillis(millis))
+                    .pollingEvery(Duration.ofMillis(millis/10))
+                    .ignoring(NoSuchElementException.class)
+                    .until(ExpectedConditions.elementToBeClickable(
+                            By.xpath(xPath)));
+        } catch (TimeoutException e) {
+            Utils.logger.error("TimeoutException");
+        }
+    }
+
+    public static void closeFirstPopUp() {
+        try {
+            new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(Driver.SECONDS))
+                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(HOME_FIRST_POP_UP_BUTTON)))
+                    .click();
+        } catch (TimeoutException e) {
+        }
+    }
+    public static void closeSecondPopUp() {
+        try {
+            Utils.logger.info("Close Second PopUp window");
+            getDriver().switchTo().defaultContent();
+            new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(Driver.SECONDS))
+                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(CATECORY_SECOND_POP_UP_CONTINUE_BUTTON)))
+                    .click();
+        } catch (TimeoutException e) {
+        }
+    }
+
+    public static void closeSecond2PopUp() {
+        try {
+            try {
+                Utils.logger.info("Close Second PopUp window");
+                new WebDriverWait(Driver.getDriver().switchTo().defaultContent(), Duration.ofSeconds(1))
+                        .until(ExpectedConditions.elementToBeClickable(By.xpath(HOME_SECOND_POP_UP_CLOSE_BUTTON)))
+                        .click();
+            } catch (TimeoutException e) {
+                Utils.logger.error("Second PopUp window TimeoutException");
+            }
+        } catch (NoSuchElementException e) {
+            Utils.logger.error("Second PopUp window NoSuchElementException");
+        }
+    }
+
+    public static void acceptCookie() {
+        try {
+            Driver.getDriver().findElement(By.id(HOME_ACCEPT_COOKIES_BUTTON_ID)).click();
+        } catch (NoSuchElementException e) {
+
         }
     }
 
@@ -85,13 +143,15 @@ driver.get("http://www.google.com");
         return new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(SECONDS))
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(locator)));
     }
-    public static void clickToListItemByName(String locator, String itemName) {
+
+    public static @Nullable WebElement getWebElementListItemByName(String locator, String itemName) {
         List<WebElement> webElementList = Driver.getWebElementListByXpath(locator);
-        for(WebElement menuItem: webElementList) {
+        for (WebElement menuItem : webElementList) {
             if (menuItem.getText().contains(itemName)) {
-                menuItem.click();
-                return;
+                return menuItem;
             }
         }
+        Utils.logger.error("Element \"" + itemName + "\' not found");
+        return null;
     }
 }
