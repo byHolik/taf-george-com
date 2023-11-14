@@ -16,7 +16,7 @@ public class Utils {
         return response.then().extract().asString();
     }
 
-    public static Error getLogInErrorObj(String responseString) throws JsonProcessingException {
+/*    public static Error getLogInErrorObj(String responseString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         //mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         String str = "\"{\"status\":\"ERROR\",\"errorCode\":\"INVALID_CREDENTIALS\",\"errorDescription\":\"We do not recognise that email address or password. Please check and try again.\",\"challenge\":0}\"";
@@ -37,7 +37,7 @@ public class Utils {
         JsonNode root = mapper.readTree(json);
         String str = root.path("error.errorCode").asText();
         System.out.println(str);
-    }
+    }*/
 
     public static String randomEmailGenerator(int emailLength) {
         String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
